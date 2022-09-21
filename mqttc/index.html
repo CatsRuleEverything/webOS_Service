@@ -31,13 +31,28 @@ SPDX-License-Identifier: Apache-2.0
     var bridge = new WebOSServiceBridge();
 
     function serviceOn() {
-        console.log("call my service");
+        console.log("call my door");
         const url = 'luna://com.mqttc.app.service/getDoorOpen';
         const params = {};
         bridge.onservicecallback = (msg) => {
             console.log(msg);
             let res = JSON.parse(msg);
             document.getElementById("txt_msg").innerHTML =res.Response;
+            console.log(res.Response)
+        };
+
+        bridge.call(url, JSON.stringify(params));
+    }
+
+    
+    function cam() {
+        console.log("call my cam");
+        const url = 'luna://com.mqttc.app.service/getToiletPicture';
+        const params = {};
+        bridge.onservicecallback = (msg) => {
+            console.log(msg);
+            let res = JSON.parse(msg);
+            document.getElementById("cam_msg").innerHTML =res.Response;
         };
 
         bridge.call(url, JSON.stringify(params));
@@ -47,7 +62,10 @@ SPDX-License-Identifier: Apache-2.0
 <body>
     <div>
         <h1 id="txt_msg">Hello, Web Application!!</h1>
+        <h1 id="cam_msg">Hello, Web Application!!</h1>
+        <img src="./static/picutre.jpeg" alt="사진이 없어용">
         <button id="on" onclick="serviceOn()">Service On</button>
+        <button id="on" onclick="cam()">getIMG</button>
     </div>
 </body>
 </html>
